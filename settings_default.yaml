@@ -1,0 +1,29 @@
+---
+# number of beer taps to display
+num_taps: 6
+# name each tap. Default values will be generated for missing taps.
+# The list will be automatically truncated to num_taps.
+tap_names:
+  - Tap 1
+  - Tap 2
+  - Tap 3
+  - Tap 4
+  - Tap 5
+  - Tap 6
+
+# MQTT settings
+mqtt:
+  # You can test this utility with the free MQTT broker provided by Eclipse
+  host: iot.eclipse.org
+  port: 1883
+  # All beer information will be published to the following main topic, with
+  # a subtopic for each tap.
+  topic: fugidaire/taplist
+  username: ""
+  password: ""
+  client_id: FugiServer
+
+topics:
+  taplist: taplist
+  leds: color
+  fans: fan
