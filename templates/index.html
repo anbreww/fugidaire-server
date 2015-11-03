@@ -4,68 +4,91 @@
   <head>
     <meta charset="utf-8">
     <title>Taplist</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="bower_components/nativeDroid2/css/<nativedroid2" charset="utf-8">
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+    <link rel="stylesheet" href="bower_components/wow/css/libs/animate.css" charset="utf-8">
+    <link rel="stylesheet" href="bower_components/nativeDroid2/css/nativedroid2.css" charset="utf-8">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
   </head>
   <body style="height: 600px; width: 100%">
 
+  <div data-role="page">
+    <div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true">
+    ...Your Leftpanel Content.
+    </div>
 
+    <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
+				<a href="#bottomsheet" class="ui-btn ui-btn-right wow fadeIn" data-wow-delay='1.2s'><i class="zmdi zmdi-more-vert"></i></a>
+				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+				<h1 class="wow fadeIn" data-wow-delay='0.4s'>Fugidaire colour changer</h1>
+			</div>
 
-    <div id="all" class="color">Main</div>
-    <div id="taps" class="color">Taps</div>
-    <div id="shelves" class="color">Shelves</div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div id="all" class="color">Main</div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6  col-xs-12">
+        <div id="taps" class="color">Taps</div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6  col-xs-12">
+        <div id="shelves" class="color">Shelves</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-lg col-md col-sm">
+        <div>
+          <fieldset>
+            <div data-role="fieldcontain">
+              <label for="checkbox-based-flipswitch">Tower cooling:</label>
+              <input type="checkbox" class="checkbox-fan" id="tower-cooling" data-role="flipswitch">
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="col-xs-12 col-lg col-md col-sm">
+        <div>
+          <fieldset>
+            <div data-role="fieldcontain">
+              <label for="checkbox-based-flipswitch">Freezer cooling:</label>
+              <input type="checkbox" class="checkbox-fan" id="freezer-cooling" data-role="flipswitch">
+            </div>
+          </fieldset>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-lg col-md col-sm">
+        <input type="hidden" id="apikey" hidden>
+      </div>
+    </div>
+    <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <a href="/kill">
+        <div class="active">
+          KILL SERVER
+        </div>
+      </a>
+    </div>
+    -->
+
+  </div>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+    <script type="text/javascript" src="bower_components/wow/dist/wow.min.js"></script>
     <script type="text/javascript" scr="bower_components/nativeDroid2/js/nativedroid2.js"> </script>
     <script type="text/javascript" src="jqColorPicker.min.js"></script>
     <script type="text/javascript" src="underscore-min.js"></script>
 
-    <script type="text/javascript">
-        updater = _.throttle(function(id, color, override) {
-          color = "#"+color
-          console.log(id + ': '+color)
-          $.ajax({
-            url:'/api/v1/'+id,
-            type:'PUT',
-            data:{'color':color},
-          });
-        }, 500);
-        $('.color').colorPicker({
-          buildCallback: function($elm) {
-              $elm.prepend('<div class="cp-color-picker"></div>');
-          },
-          cssAddon: '.cp-disp{padding:10px; margin-bottom:6px; font-size:19px; height:20px; line-height:20px}' +
-          '.cp-xy-slider{width:200px; height:200px;}' +
-'.cp-xy-cursor{width:16px; height:16px; border-width:2px; margin:-8px}' +
-              			'.cp-z-slider{height:200px; width:40px;}' +
-              			'.cp-z-cursor{border-width:8px; margin-top:-8px;}' +
-              			'.cp-alpha{height:40px;}' +
-              			'.cp-alpha-cursor{border-width: 8px; margin-left:-8px;}',
-          opacity: false,
-          doRender: 'div div',
-          preventFocus: true,
-          renderCallback: function($elm, toggled) {
-            var colors = this.color.colors,
-            rgb = colors.RND.rgb;
-            updater($elm.attr('id'), colors.HEX, false);
-
-            if (toggled === true) {
-      				// here you can recalculate position after showing the color picker
-      				// in case it doesn't fit into view.
-      				$('.trigger').removeClass('active');
-      				$elm.closest('.trigger').addClass('active');
-      			} else if (toggled === false) {
-              // this happens when the box just disappeared
-      				$elm.closest('.trigger').removeClass('active');
-      			}
-
-            $('.cp-disp').css({
-                backgroundColor: '#' + colors.HEX,
-                color: colors.RGBLuminance > 0.22 ? '#222' : '#ddd'
-            }).text('rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b +
-                ', ' + (Math.round(colors.alpha * 100) / 100) + ')');
-            },
-        }); // that's it
-    </script>
+    <script type="text/javascript" src="fugidaire.js"></script>
   </body>
 </html>

@@ -10,8 +10,7 @@ div.color {
   border-width:medium;
   border-color:black;
   border-style:solid;
-  padding: 10px;
-  width: 100px;
-  height: 100px;
+  padding: 10px 10px;
+  height: 150px;
   margin: 10px 10px;
 }

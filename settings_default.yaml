@@ -10,6 +10,9 @@ tap_names:
   - Tap 4
   - Tap 5
   - Tap 6
+# api key : TEMPORARY security measure for running server publicly.
+# should change this to use Oauth tokens ideally
+api_key: ""
 
 # MQTT settings
 mqtt:
